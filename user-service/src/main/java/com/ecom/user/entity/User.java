@@ -3,6 +3,8 @@ package com.ecom.user.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -24,4 +26,8 @@ public class User {
     private String mobile;
 
     private String password;
+
+    private String resetToken;
+
+    private LocalDateTime tokenExpiry;
 }
