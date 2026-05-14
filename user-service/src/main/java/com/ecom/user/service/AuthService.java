@@ -3,6 +3,8 @@ package com.ecom.user.service;
 import com.ecom.user.dto.LoginRequest;
 import com.ecom.user.dto.LoginResponse;
 import com.ecom.user.entity.User;
+import com.ecom.user.exception.InvalidCredentialsException;
+import com.ecom.user.exception.ResourceNotFoundException;
 import com.ecom.user.repository.UserRepository;
 import com.ecom.user.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +19,15 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
     public LoginResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(()-> new RuntimeException("Invalid email"));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(()-> new ResourceNotFoundException("User Not Found"));
         boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if (!isPasswordMatch) {
-            throw new  RuntimeException("Invalid password");
+            throw new InvalidCredentialsException("Invalid password");
         }
 
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(
+                user.getEmail(), user.getRole().name()
+        );
         return new LoginResponse(token);
     }
 }

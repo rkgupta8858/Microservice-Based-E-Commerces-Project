@@ -1,5 +1,6 @@
 package com.ecom.user.entity;
 
+import com.ecom.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,9 @@ public class User {
     private String mobile;
 
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private String resetToken;
 

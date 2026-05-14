@@ -3,6 +3,8 @@ package com.ecom.user.service;
 import com.ecom.user.dto.ForgotPasswordRequest;
 import com.ecom.user.dto.ResetPasswordRequest;
 import com.ecom.user.entity.User;
+import com.ecom.user.exception.InvalidCredentialsException;
+import com.ecom.user.exception.ResourceNotFoundException;
 import com.ecom.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +21,7 @@ public class PasswordService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public String forgotPassword(ForgotPasswordRequest request) {
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Email not Found"));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ResourceNotFoundException("Email not Found"));
         String token = UUID.randomUUID().toString();
         user.setResetToken(token);
         user.setTokenExpiry(LocalDateTime.now().plusMinutes(15));
@@ -29,9 +31,9 @@ public class PasswordService {
     }
 
     public String resetPassword(ResetPasswordRequest request){
-        User user = userRepository.findByResetToken(request.getToken()).orElseThrow(() -> new RuntimeException("Invalid Token"));
+        User user = userRepository.findByResetToken(request.getToken()).orElseThrow(() -> new InvalidCredentialsException("Invalid Token"));
         if (user.getTokenExpiry().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Token has expired");
+            throw new InvalidCredentialsException("Token has expired");
         }
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         user.setResetToken(null);

@@ -3,6 +3,7 @@ package com.ecom.user.service;
 
 import com.ecom.user.dto.UserRequest;
 import com.ecom.user.entity.User;
+import com.ecom.user.enums.Role;
 import com.ecom.user.exception.UserAlreadyExistsException;
 import com.ecom.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class UserService {
                 .email(request.getEmail())
                 .mobile(request.getMobile())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .role(request.getRole())
                 .build();
         userRepository.save(user);
         return "User registered successfully";
