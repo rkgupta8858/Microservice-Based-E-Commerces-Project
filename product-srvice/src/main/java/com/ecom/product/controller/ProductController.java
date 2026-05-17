@@ -35,4 +35,10 @@ public class ProductController {
                         ){
         return productService.getAllProducts(page, size, sortBy, direction, category, productName);
     }
+
+    @GetMapping("/{productId}")
+    public ProductResponse getProductById(
+            @PathVariable Long productId) {
+        return productService.getProductById(productId);
+    }
 }

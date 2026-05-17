@@ -3,6 +3,7 @@ package com.ecom.product.service.impl;
 import com.ecom.product.dto.ProductRequest;
 import com.ecom.product.dto.ProductResponse;
 import com.ecom.product.entity.Product;
+import com.ecom.product.exception.ProductNotFoundException;
 import com.ecom.product.repository.ProductRepository;
 import com.ecom.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,18 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> productPage = productRepository.findByCategoryContainingIgnoreCaseAndProductNameContainingIgnoreCase(category, productName, pageable);
         return productPage.map(this::mapToResponse);
     }
+
+    @Override
+    public ProductResponse getProductById(Long productId) {
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new ProductNotFoundException(
+                                "Product not found with id : " + productId));
+
+        return mapToResponse(product);
+    }
+
     private ProductResponse mapToResponse(Product product) {
 
         return ProductResponse.builder()

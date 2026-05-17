@@ -15,4 +15,6 @@ public interface ProductService {
             String category,
             String productName
     );
+
+    ProductResponse getProductById(Long ProductId);
 }
