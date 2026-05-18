@@ -2,6 +2,7 @@ package com.ecom.product.controller;
 
 import com.ecom.product.dto.ProductRequest;
 import com.ecom.product.dto.ProductResponse;
+import com.ecom.product.dto.ProductUpdateRequest;
 import com.ecom.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,13 @@ public class ProductController {
     public ProductResponse getProductById(
             @PathVariable Long productId) {
         return productService.getProductById(productId);
+    }
+
+    @PutMapping("/{productId}")
+    public ProductResponse updateProduct(
+            @PathVariable Long productId,
+            @RequestBody ProductUpdateRequest request) {
+
+        return productService.updateProduct(productId, request);
     }
 }

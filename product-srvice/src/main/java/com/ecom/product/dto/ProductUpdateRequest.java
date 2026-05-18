@@ -1,17 +1,12 @@
 package com.ecom.product.dto;
 
 import com.ecom.product.enums.ProductStatus;
-import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-@Builder
-public class ProductResponse implements Serializable {
-    private Long productId;
-
+public class ProductUpdateRequest {
     private String productName;
 
     private String category;

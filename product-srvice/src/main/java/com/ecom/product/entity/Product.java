@@ -8,7 +8,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "products")
+@Table(name = "products",
+        indexes = {
+                @Index(name = "idx_product_name", columnList = "productName"),
+                @Index(name = "idx_category", columnList = "category"),
+                @Index(name = "idx_brand", columnList = "brand")
+        })
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,4 +47,6 @@ public class Product {
     private ProductStatus status;
 
     private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }

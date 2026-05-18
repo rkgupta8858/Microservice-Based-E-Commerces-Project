@@ -2,6 +2,7 @@ package com.ecom.product.service;
 
 import com.ecom.product.dto.ProductRequest;
 import com.ecom.product.dto.ProductResponse;
+import com.ecom.product.dto.ProductUpdateRequest;
 import org.springframework.data.domain.Page;
 
 public interface ProductService {
@@ -17,4 +18,6 @@ public interface ProductService {
     );
 
     ProductResponse getProductById(Long ProductId);
+
+    ProductResponse updateProduct(Long productId, ProductUpdateRequest request);
 }
