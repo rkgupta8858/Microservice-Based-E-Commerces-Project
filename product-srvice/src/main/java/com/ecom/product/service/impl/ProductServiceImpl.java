@@ -25,6 +25,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
 
+    @Override
+    @CacheEvict(value = "products", allEntries = true)
     public ProductResponse addProduct(ProductRequest request) {
         Product product = Product.builder()
                 .productName(request.getProductName())
@@ -42,7 +44,9 @@ public class ProductServiceImpl implements ProductService {
         return mapToResponse(savedProduct);
     }
     @Override
-    @Cacheable(value = "products")
+    @Cacheable(value = "products",
+               key = "#page + '-' + #size + '-' + #sortBy + '-' + #direction + '-' + #category + '-' + #productName"
+    )
     public Page<ProductResponse> getAllProducts(int page, int size, String sortBy, String direction, String category, String productName) {
         Sort sort = direction.equalsIgnoreCase("DESC")
                 ? Sort.by(sortBy).descending()
@@ -67,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Caching(evict = {
             @CacheEvict(value = "products", allEntries = true),
-            @CacheEvict(value = "productDetails", allEntries = true)
+            @CacheEvict(value = "productDetails", key = "#productId")
     })
     public ProductResponse updateProduct(Long productId, ProductUpdateRequest request) {
         Product product = productRepository.findById(productId)

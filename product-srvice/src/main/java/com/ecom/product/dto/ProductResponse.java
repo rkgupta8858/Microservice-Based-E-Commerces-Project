@@ -1,14 +1,18 @@
 package com.ecom.product.dto;
 
 import com.ecom.product.enums.ProductStatus;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductResponse implements Serializable {
     private Long productId;
 
